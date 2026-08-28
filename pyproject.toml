@@ -1,0 +1,10 @@
+[project]
+name = "ha-ledvance-tuya-resync-localkey"
+version = "0.1.0"
+description = "pyscript for homeassistant to resync local keys from private tuya API."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pycryptodome==3.17",
+    "requests==2.31.0",
+]

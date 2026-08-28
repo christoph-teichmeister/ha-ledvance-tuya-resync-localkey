@@ -9,12 +9,12 @@ This repository includes
 
 ## To just print out your local keys...
 
-First, create a Python 3 environment - version 3.10 is confirmed as working.
+First, install [uv](https://docs.astral.sh/uv/getting-started/installation/) - version 3.10 is confirmed as working.
 
 Then install the dependencies and run the script:
 ```
-pip install -r requirements.txt
-python print-local-keys.py
+uv sync
+uv run print_local_keys.py
 ```
 
 If you want to run the script non-interactively, set the environment variables 
