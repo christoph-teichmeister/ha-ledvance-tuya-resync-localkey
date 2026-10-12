@@ -22,8 +22,8 @@ uv sync
 uv run print_local_keys.py
 ```
 
-If you want to run the script non-interactively, set the environment variables
-`LEDVANCE_USERNAME` and `LEDVANCE_PASSWORD` to your Ledvance account credentials.
+The script reads your Ledvance account credentials from `~/.my-passwords.json`, a JSON list that needs an entry
+`{"for": "ledvance", "username": "<email>", "password": "<password>"}`. Never put credentials in the source.
 
 The script also scans your local network (via UDP broadcast) to find each device's local IP address. This only works if
 the device is currently online and reachable on the same network segment as the machine running the script - if a device

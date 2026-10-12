@@ -1,12 +1,27 @@
 #!/usr/bin/env python3
 
+import json
+from pathlib import Path
+
 import tinytuya
 
 from pyscript_modules.tuya.api import TuyaAPI
 from pyscript_modules.tuya.exceptions import InvalidAuthentication
 
+CREDENTIALS_FILE = Path.home() / ".my-passwords.json"
+
+
+def load_credentials():
+    """Ledvance app login from the entry `{"for": "ledvance", "username": ..., "password": ...}`."""
+    entries = json.loads(CREDENTIALS_FILE.read_text())
+    entry = next((e for e in entries if e.get("for") == "ledvance"), None)
+    if not entry:
+        exit(f'No entry with "for": "ledvance" in {CREDENTIALS_FILE}.')
+    return {"email": entry["username"], "password": entry["password"]}
+
+
 def main():
-    api = TuyaAPI(email="you@example.com", password="REDACTED")
+    api = TuyaAPI(**load_credentials())
     try:
         api.login()
     except InvalidAuthentication:
