@@ -29,17 +29,13 @@ The script also scans your local network (via UDP broadcast) to find each device
 the device is currently online and reachable on the same network segment as the machine running the script - if a device
 is offline or on a different network/VLAN, its IP will be reported as not found.
 
-## Resync changed keys into Home Assistant
+## Resync changed keys automatically in Home Assistant
 
 A reset/re-paired device gets a new local key, and LocalTuya then logs `could not decrypt data: wrong key`.
-`resync_ha_local_keys.py` compares every LocalTuya device's key with the Ledvance cloud and updates the changed ones
-through the LocalTuya options flow (entity IDs stay). It needs a Home Assistant long-lived token in
-`~/.my-passwords.json` as `{"for": "homeassistant", "password": "<token>"}`.
-
-```
-uv run resync_ha_local_keys.py --dry-run   # report only
-uv run resync_ha_local_keys.py             # update changed keys
-```
+The [Pyscript](https://hacs-pyscript.readthedocs.io/) app `pyscript/apps/ledvance_resync.py` provides the service
+`pyscript.ledvance_resync_keys`: it fetches the keys from the Ledvance cloud, writes changed ones into the LocalTuya
+config entry, reloads it and returns `{"updated": [<device names>]}`. Setup is in the app's docstring; call it from
+an automation, e.g. when a lamp has been `unavailable` for 15 minutes.
 
 ## LocalTuya setup for light bulbs
 
