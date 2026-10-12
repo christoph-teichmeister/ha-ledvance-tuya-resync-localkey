@@ -29,27 +29,17 @@ The script also scans your local network (via UDP broadcast) to find each device
 the device is currently online and reachable on the same network segment as the machine running the script - if a device
 is offline or on a different network/VLAN, its IP will be reported as not found.
 
-## How to resync local keys automatically (via service)
+## Resync changed keys into Home Assistant
 
-If you have many devices and reset them sometimes by accident, like me, you can create a service for resyncing the local
-keys. (New local keys are generated if you reset/re-register your devices).
+A reset/re-paired device gets a new local key, and LocalTuya then logs `could not decrypt data: wrong key`.
+`resync_ha_local_keys.py` compares every LocalTuya device's key with the Ledvance cloud and updates the changed ones
+through the LocalTuya options flow (entity IDs stay). It needs a Home Assistant long-lived token in
+`~/.my-passwords.json` as `{"for": "homeassistant", "password": "<token>"}`.
 
-### Prerequisites
-
-- [Pyscript Integration](https://hacs-pyscript.readthedocs.io/en/latest/)
-- Set `allow_all_imports` and `hass_is_global` to true.
-  (Described [here](https://hacs-pyscript.readthedocs.io/en/latest/configuration.html))
-- Ledvance account with devices configured
-
-### Setup
-
-- Replace placeholders in `pyscript\sync_tuya_keys.py` with your Ledvance account credentials.
-- Copy `pyscript_modules` and `pyscript` to your Home Assistant config directory.
-- In your Home Assistant dashboard should now be under `Developer tools` --> `Services` a service called
-  `Pyscript Python scripting: synctuyakeys` that you can call. (You may have to restart before)
-- (If you want Log output, you need
-  to [change the log level to INFO](https://hacs-pyscript.readthedocs.io/en/latest/reference.html#logging) or
-  use [jupyter](https://jupyter.org/install))
+```
+uv run resync_ha_local_keys.py --dry-run   # report only
+uv run resync_ha_local_keys.py             # update changed keys
+```
 
 ## LocalTuya setup for light bulbs
 
