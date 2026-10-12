@@ -12,12 +12,12 @@ CREDENTIALS_FILE = Path.home() / ".my-passwords.json"
 
 
 def load_credentials():
-    """Ledvance app login from the entry `{"for": "ledvance", "username": ..., "password": ...}`."""
+    """Ledvance app login from the entry `{"for": "ledvance", "email": ..., "password": ...}`."""
     entries = json.loads(CREDENTIALS_FILE.read_text())
     entry = next((e for e in entries if e.get("for") == "ledvance"), None)
     if not entry:
         exit(f'No entry with "for": "ledvance" in {CREDENTIALS_FILE}.')
-    return {"email": entry["username"], "password": entry["password"]}
+    return {"email": entry["email"], "password": entry["password"]}
 
 
 def main():
